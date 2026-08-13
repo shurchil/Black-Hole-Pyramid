@@ -1,0 +1,57 @@
+# Desktop packaging for the Steam build.
+#
+# Steam distributes the unpacked directory rather than an installer, so the
+# targets here are `dir`-friendly formats. Point steamcmd at the contents of
+# `release/<platform>-unpacked/` when building a depot.
+
+appId: com.blackholepyramid.game
+productName: Black Hole Pyramid
+copyright: Copyright © Black Hole Pyramid
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - dist/**/*
+  - electron/**/*
+  - package.json
+  - '!**/*.map'
+  - '!**/node_modules/*/{test,__tests__,tests,example,examples}/**'
+
+# steamworks.js ships native binaries that must not be asar-packed.
+asarUnpack:
+  - '**/node_modules/steamworks.js/**'
+
+win:
+  target:
+    - target: dir
+      arch: [x64]
+    - target: nsis
+      arch: [x64]
+  artifactName: ${productName}-${version}-${arch}.${ext}
+
+mac:
+  target:
+    - target: dir
+      arch: [x64, arm64]
+    - target: dmg
+      arch: [x64, arm64]
+  category: public.app-category.strategy-games
+  hardenedRuntime: true
+  # Steam's overlay needs these entitlements on macOS.
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+
+linux:
+  target:
+    - target: dir
+      arch: [x64]
+    - target: AppImage
+      arch: [x64]
+  category: Game
+  synopsis: A fast, tactical abstract duel.
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true

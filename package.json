@@ -1,0 +1,38 @@
+{
+  "name": "black-hole-pyramid",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Black Hole Pyramid - a fast, tactical abstract duel for mobile and Steam.",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 4173",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:smoke": "npm run build && node scripts/smoke.mjs",
+    "typecheck": "tsc --noEmit",
+    "verify": "npm run typecheck && npm run test && npm run test:smoke",
+    "bench:ai": "vite-node scripts/bench-ai.ts",
+    "probe:eval": "vite-node scripts/probe-eval.ts",
+    "setup:mobile": "npm i @capacitor/core@^6 @capacitor/cli@^6 @capacitor/android@^6 @capacitor/ios@^6 @capacitor/haptics@^6 @capacitor/splash-screen@^6 @capacitor/status-bar@^6",
+    "setup:desktop": "npm i -D electron@^33 electron-builder@^25 && npm i steamworks.js@^0.4",
+    "mobile:add": "cap add android && cap add ios",
+    "mobile:sync": "npm run build && cap sync",
+    "mobile:android": "npm run mobile:sync && cap open android",
+    "mobile:ios": "npm run mobile:sync && cap open ios",
+    "desktop:dev": "npm run build && electron .",
+    "desktop:dist": "npm run build && electron-builder --publish never"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.1",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10",
+    "vite-node": "^2.1.4",
+    "vitest": "^2.1.4"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

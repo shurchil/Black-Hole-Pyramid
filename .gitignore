@@ -1,0 +1,14 @@
+node_modules/
+dist/
+release/
+.smoke/
+*.log
+.DS_Store
+
+# Capacitor generates these; they are created by `npm run mobile:add`.
+/android/
+/ios/
+
+.vite/
+.vscode/
+.idea/
