@@ -40,7 +40,13 @@ export class App {
   readonly particles = new ParticleSystem(700);
   readonly camera = new Camera();
   readonly tweens = new TweenManager();
-  readonly ai = new AiClient();
+  /**
+   * The single-file build inlines everything into one HTML document, where a
+   * separate worker file cannot be fetched. The AI client already falls back to
+   * a synchronous search, but skipping the doomed worker construction keeps the
+   * console clean. Search costs 0.2-42ms per move, so the main thread copes.
+   */
+  readonly ai = new AiClient(!import.meta.env.VITE_SINGLE_FILE);
 
   profile: Profile;
 
